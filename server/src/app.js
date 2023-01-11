@@ -3,6 +3,7 @@ const path = require("path");
 const cors = require("cors");
 const morgan = require("morgan");
 const planetsRouter = require("./routes/planets.router");
+const launchesRouter = require("./routes/launches.router");
 
 const app = express();
 
@@ -21,10 +22,13 @@ app.use(express.json());
 
 //serving static files
 app.use(express.static(path.join(__dirname, "..", "public")));
+
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "..", "public", "index.html"));
 });
 
-app.use(planetsRouter);
+//routers
+app.use("/planets", planetsRouter);
+app.use("/launches", launchesRouter);
 
 module.exports = app;
