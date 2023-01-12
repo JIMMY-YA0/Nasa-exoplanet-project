@@ -11,7 +11,7 @@
     "server": "npm run dev --prefix server",
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "deploy": "concurrently \"npm run build --prefix client\" \"npm start --prefix server\"",
+    "deploy": "npm run build --prefix client && npm start --prefix server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
