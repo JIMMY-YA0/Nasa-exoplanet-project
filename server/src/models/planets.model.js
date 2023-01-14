@@ -55,7 +55,7 @@ async function getAllPlanets() {
 
 async function savePlanet(planet) {
   try {
-    //insert + update = upsert, if it doesn't exist, insert second argument into that collection.
+    //insert + update = upsert, if it doesn't exist, upsert second argument into that collection.
     await planets.updateOne(
       {
         keplerName: planet.kepler_name,
