@@ -1,3 +1,4 @@
+const planets = require("./planets.mongo");
 const { parse } = require("csv-parse");
 const fs = require("fs");
 const path = require("path");
@@ -10,7 +11,7 @@ function isHabitablePlanet(planet) {
     planet["koi_prad"] < 1.6
   );
 }
-const habitablePlanet = [];
+
 //the createReadStream return readable strem but in raw buffer or bytes
 function loadPlanetData() {
   return new Promise((resolve, reject) => {
@@ -24,27 +25,53 @@ function loadPlanetData() {
           columns: true,
         })
       )
-      .on("data", (data) => {
+      .on("data", async (data) => {
         if (isHabitablePlanet(data)) {
-          habitablePlanet.push(data);
+          savePlanet(data);
         }
       })
       .on("error", (err) => {
         console.log(err);
         reject(err);
       })
-      .on("end", () => {
-        console.log(`${habitablePlanet.length} habitable planets found!`);
-        console.log("done");
+      .on("end", async () => {
+        const countPlanetsFound = (await getAllPlanets()).length;
+        console.log(`${countPlanetsFound} habitable planets found!`);
         resolve();
       });
   });
 }
 
 //Building a data access function
-function getAllPlanets() {
-  return habitablePlanet;
+async function getAllPlanets() {
+  return await planets.find(
+    {},
+    {
+      _id: 0,
+      __v: 0,
+    }
+  );
 }
+
+async function savePlanet(planet) {
+  try {
+    //insert + update = upsert, if it doesn't exist, insert second argument into that collection.
+    await planets.updateOne(
+      {
+        keplerName: planet.kepler_name,
+      },
+      {
+        keplerName: planet.kepler_name,
+      },
+      {
+        upsert: true,
+      }
+    );
+  } catch (err) {
+    console.error(`Cound not save planet ${err}`);
+  }
+}
+
 module.exports = {
   getAllPlanets,
   loadPlanetData,
