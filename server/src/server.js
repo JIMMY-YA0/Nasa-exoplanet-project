@@ -1,7 +1,5 @@
 // app.listen(PORT);
 const http = require("http");
-const dotenv = require("dotenv");
-dotenv.config();
 
 const app = require("./app");
 const { mongoConnect } = require("./util/mongo");
