@@ -4,19 +4,6 @@ const planets = require("./planets.mongo");
 const axios = require("axios");
 const DEFAULT_FLIGHT_NUMBER = 100;
 
-const launch = {
-  flightNumber: 100, // caculate // flight_number
-  mission: "Kepler Exploration X", // user input // name
-  rocket: "Explorer IS1", // user input // rocket.name
-  launchDate: new Date("December 27, 2030"), // user input // date_local
-  target: "Kepler-442 b", // user input // not applicable
-  customers: ["NASA", "Elon Musk", "Space X"], // standard input // payload.customers for each payload
-  upcoming: true, // standard input until date past // upcoming
-  success: true, // standard input until date past where something goes wrong // success
-};
-
-saveLaunch(launch);
-
 async function getLatestFlightNumber() {
   // The doc is sorted in descending order based on flightNumber and findOne() will return the first one document in the list
   const latestLaunch = await launchesDatabase.findOne().sort("-flightNumber");
