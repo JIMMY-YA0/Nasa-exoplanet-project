@@ -4,11 +4,13 @@ const {
   existsLaunchWithId,
   abortLaunchById,
 } = require("../../models/launches.model");
+const { getPagination } = require("../../util/query");
 
 // Connect launches to values via iterator
 
 async function httpGetAllLaunches(req, res) {
-  return res.status(200).json(await getAllLaunches());
+  const { skip, limit } = getPagination(req.query);
+  return res.status(200).json(await getAllLaunches(skip, limit));
 }
 
 async function httpAddNewLaunch(req, res) {
