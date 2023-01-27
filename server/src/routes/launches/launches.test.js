@@ -6,10 +6,10 @@ const { loadPlanetData } = require("../../models/planets.model");
 describe("Launches API", () => {
   beforeAll(async () => {
     await mongoConnect();
+    await loadPlanetData();
   });
   afterAll(async () => {
     await mongoDisconnect();
-    await loadPlanetData();
   });
   //Test GET /launches
   describe("Test GET /launches", () => {
